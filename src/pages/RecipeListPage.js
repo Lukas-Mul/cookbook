@@ -17,10 +17,6 @@ export function RecipeListPage() {
     api.get('/recipes').then((response) => setRecipes(response.data));
   }, []);
 
-
-
-
-
   return (
     <Container>
       <h1>Recepty</h1>

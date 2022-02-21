@@ -19,7 +19,7 @@ import {
   Button,
 } from 'reactstrap';
 
-export function EditPage(props) {
+export function NewRecipe(props) {
   const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [portionsAmount, setPortionsAmount] = useState('');
@@ -155,18 +155,9 @@ export function EditPage(props) {
             />
           </Container>
         </Col>
-        <Container>
-          <div className="pt-3">
-            <ol>
-              {oldDirectionList.split(/[0-9]+\.\s/).map((dir) => {
-                return <li key={dir}>{dir}</li>;
-              })}
-            </ol>
-          </div>
-        </Container>
       </Row>
     </div>
   );
 }
 
-export default EditPage;
+export default NewRecipe;

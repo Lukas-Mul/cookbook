@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { api } from '../api';
 import { Portions } from '../components/Portions';
-// import { EditPage } from '../pages/EditPage';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
+
 
 export function RecipeDetailPage() {
   const { slug } = useParams();
@@ -31,6 +32,9 @@ export function RecipeDetailPage() {
   const firstElement = directionsList.shift();
   console.log(firstElement);
 
+  // Update API with user input
+
+
   // TABLE WITH INGREDIENCES
   const renderTable = () => {
     return ingredients.map(({ _id, name, amount, amountUnit }) => {
@@ -47,22 +51,27 @@ export function RecipeDetailPage() {
   return (
     <Row className="bg-light gy-2" xs="12">
       <Container>
-        <h1>{recipe.title}</h1>
-        <p className="mb-0">Čas na přípravu: {recipe.preparationTime} min</p>
-        <p className="mb-0">Přílohy: {recipe.sideDish}</p>
-        <div>
+        <div className="float-end">
           <Link to={`/recipe/${slug}/edit`}>
-            <Button className="border">Upravit</Button>
+            <Button className="btn btn-info border mt-2 mb-2">Upravit</Button>
           </Link>
           <Link to={`/recipe/smazat`}>
-            <Button className="border">Smazat</Button>
+            <Button className="btn btn-danger border mt-2 mb-2">Smazat</Button>
           </Link>
         </div>
+        <h1>{recipe.title}</h1>
+        <p className="mb-0 fw-bold ">
+          Čas na přípravu: {recipe.preparationTime} min
+        </p>
+        <p className="mb-0 fw-bold">Přílohy: {recipe.sideDish}</p>
 
-        <Portions
-          portionsAmount={portionsAmount}
-          setPortionsAmount={setPortionsAmount}
-        />
+        <div className="w-25">
+          <Portions
+            portionsAmount={portionsAmount}
+            setPortionsAmount={setPortionsAmount}
+          />
+        </div>
+
         <div className="child"></div>
       </Container>
       <Row>

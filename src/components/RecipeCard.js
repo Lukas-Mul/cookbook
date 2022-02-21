@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 
 export function RecipeCard({ title, preparationTime, slug }) {
   return (
-    <Card className="h-100">
+    <Card className="h-100 border-primary">
       <Link to={`/recipe/${slug}`}>
         <CardImg src={placeholder} />
       </Link>
       <CardBody>
-        <CardTitle>{title}</CardTitle>
-        <CardSubtitle>{preparationTime} min</CardSubtitle>
+        <CardTitle className="orange-300">{title}</CardTitle>
+        <CardSubtitle className="orange-300">
+          {preparationTime} min
+        </CardSubtitle>
       </CardBody>
     </Card>
   );

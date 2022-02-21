@@ -1,20 +1,22 @@
-import { Container, Table } from 'reactstrap';
+import { Container, Table, Row, Col, Button } from 'reactstrap';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { api } from '../api';
-import axios from 'axios';
+import { Portions } from '../components/Portions';
+// import { EditPage } from '../pages/EditPage';
+import { Link } from 'react-router-dom';
 
 export function RecipeDetailPage() {
   const { slug } = useParams();
   const [recipe, setRecipe] = useState({});
-
   const [ingredients, setIngredients] = useState([]);
+  const [portionsAmount, setPortionsAmount] = useState('');
 
   useEffect(() => {
     api.get(`/recipes/${slug}`).then((response) => {
       setRecipe(response.data);
       setIngredients(response.data.ingredients);
-      console.log('rdi', response.data.ingredients[0]);
+      setPortionsAmount(response.data.servingCount);
     });
   }, [slug]);
 
@@ -24,63 +26,72 @@ export function RecipeDetailPage() {
 
   let dirArr = [recipe.directions];
   let dirStr = dirArr.toString();
-  // console.log(dirStr);
-  const ingr = recipe.ingredients;
-  // console.log(directions);
-  console.log('ingr', ingr);
-  console.log('ingr0', ingr);
-  // console.log(ingr2[0]);
-  console.log('recipe', recipe);
 
   const directionsList = dirStr.split(/[0-9]+\.\s/);
   const firstElement = directionsList.shift();
-  // console.log(firstElement);
-  // console.log(directionsList);
+  console.log(firstElement);
 
+  // TABLE WITH INGREDIENCES
   const renderTable = () => {
     return ingredients.map(({ _id, name, amount, amountUnit }) => {
       return (
         <tr key={_id}>
-          {/* <th scope="row"> */}
-            <td>{name}</td>
-            <td>{amount}</td>
-            <td>{amountUnit}</td>
-          {/* </th> */}
+          <td>{name}</td>
+          <td>{(amount / recipe.servingCount) * portionsAmount}</td>
+          <td>{amountUnit}</td>
         </tr>
       );
     });
   };
 
   return (
-    <div>
+    <Row className="bg-light gy-2" xs="12">
       <Container>
-        <h1>Recept: {recipe.title}</h1>
-        <p>{recipe.preparationTime} min</p>
-        <Container>
-          <div>{recipe.sideDish}</div>
-        </Container>
-        <p>{recipe.servingCount} </p>
-      </Container>
-      <Container>
-        {/* <div>{directionsList}</div> */}
-        <ol>
-          {directionsList.map((dir) => {
-            return <li key={dir}>{dir}</li>;
-          })}
-        </ol>
-      </Container>
-
-      <Container>
+        <h1>{recipe.title}</h1>
+        <p className="mb-0">Čas na přípravu: {recipe.preparationTime} min</p>
+        <p className="mb-0">Přílohy: {recipe.sideDish}</p>
         <div>
-          <h1>Budeme potřebovat</h1>
-          <table>
-            <tbody>{renderTable()}</tbody>
-          </table>
+          <Link to={`/recipe/${slug}/edit`}>
+            <Button className="border">Upravit</Button>
+          </Link>
+          <Link to={`/recipe/smazat`}>
+            <Button className="border">Smazat</Button>
+          </Link>
         </div>
+
+        <Portions
+          portionsAmount={portionsAmount}
+          setPortionsAmount={setPortionsAmount}
+        />
+        <div className="child"></div>
       </Container>
-      <Container>
-        <div>{recipe.lastModifiedDate}</div>
-      </Container>
-    </div>
+      <Row>
+        <Col className="bg-light" xs="6">
+          <Container>
+            <div>
+              <h2 className="pt-3">Budeme potřebovat</h2>
+              <Table>
+                <tbody>{renderTable()}</tbody>
+              </Table>
+            </div>
+          </Container>
+        </Col>
+
+        <Col xs="6">
+          <Container>
+            <h2 className="pt-3">Postup</h2>
+
+            <ol>
+              {directionsList.map((dir) => {
+                return <li key={dir}>{dir}</li>;
+              })}
+            </ol>
+          </Container>
+        </Col>
+        <Container>
+          <div className="pt-3">{recipe.lastModifiedDate}</div>
+        </Container>
+      </Row>
+    </Row>
   );
 }

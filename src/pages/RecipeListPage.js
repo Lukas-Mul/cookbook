@@ -1,9 +1,10 @@
-import { Container } from 'reactstrap';
+import { Container, Button } from 'reactstrap';
 import { SearchInput } from '../components/SearchInput';
 import { RecipesList } from '../components/RecipesList';
 import { useEffect, useState } from 'react';
 // import { mockRecipes } from '../mockData';
 import { api } from '../api';
+import { Link } from 'react-router-dom';
 
 export function RecipeListPage() {
   const [filter, setFilter] = useState('');
@@ -23,9 +24,12 @@ export function RecipeListPage() {
       <SearchInput
         value={filter}
         setValue={setFilter}
-        placeholder="Muj novy placeholder"
-        className="mb-4"
+        placeholder="Vyhledej recept"
+        className="mb-4 w-25 border $orange-300"
       />
+      <Link to={`/recipe/novyrecept`}>
+        <Button className="border">Přidat recept</Button>
+      </Link>
       <RecipesList recipes={filterredRecipes} />
     </Container>
   );

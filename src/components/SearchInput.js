@@ -3,11 +3,11 @@ import { Input } from 'reactstrap';
 
 export function SearchInput({ setValue, ...rest }) {
   return (
-      <Input
-        // value={value}
-        placeholder="Vyhledat recept..."
-        onChange={(event) => setValue(event.target.value)}
-        {...rest}
-      />
+    <Input
+      // value={value}
+      placeholder=""
+      onChange={(event) => setValue(event.target.value)}
+      {...rest}
+    />
   );
 }
